@@ -23,10 +23,12 @@
                         <td><img src="{{ asset('/logos/'.$company->logo) }}" alt="" width=100 height=100></td>
                         <td>{{ $company->name }}</td>
                         <td>{{ $company->email }}</td>
-                        <td>{{ $company->website }}</td>
                         <td>
-                            <button class="btn btn-success">Edit</button>
-                            <button class="btn btn-danger">Delete</button>
+                            <x-link-button href="{{ $company->website }}">Visit</x-link-button>
+                        </td>
+                        <td>
+                            <x-link-button href="{{route('company.edit', $company)}}">Edit</x-link-button>
+                            <x-button class="bg-red-500">Delete</x-button>
                         </td>
                     </tr>
                 @empty
