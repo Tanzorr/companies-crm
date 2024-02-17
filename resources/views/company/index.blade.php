@@ -20,7 +20,7 @@
                 <tbody>
                 @forelse($companies as $company)
                     <tr>
-                        <td><img src="{{ asset('/logos/'.$company->logo) }}" alt="" width=100 height=100></td>
+                        <td><img src="{{ asset('/storage/logos/'.$company->logo) }}" alt="" width=100 height=100></td>
                         <td>{{ $company->name }}</td>
                         <td>{{ $company->email }}</td>
                         <td>
@@ -28,7 +28,11 @@
                         </td>
                         <td>
                             <x-link-button href="{{route('company.edit', $company)}}">Edit</x-link-button>
-                            <x-button class="bg-red-500">Delete</x-button>
+                            <form action="{{ route('company.destroy', $company) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <x-button >Delete</x-button>
+                            </form>
                         </td>
                     </tr>
                 @empty

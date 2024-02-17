@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
-use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
@@ -14,7 +14,7 @@ class CompanyController extends Controller
     {
         $companies = Company::paginate(20);
 
-        return view('company.index',['companies' => $companies]);
+        return view('company.index', ['companies' => $companies]);
     }
 
     /**
@@ -28,27 +28,12 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string | max:255',
-            'email' => 'required | email | max:255',
-            'logo' => 'required | image | mimes:jpeg,png,jpg,gif,svg ',
-            'website' => 'required | url',
-        ]);
-
-        $logoName = time() . '.' . $request->logo->extension();
-        $request->logo->move(public_path('logos'), $logoName);
-
-        $company = new Company([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'logo' => $logoName,
-            'website' => $request->get('website'),
-        ]);
-
-
-        $company->save();
+        $request = $request->validated();
+        $logoName = time() . '.' . $request['logo']->extension();
+        $request['logo']->move(storage_path('app/public/logos'), $logoName);
+        Company::create([...$request, 'logo' => $logoName]);
 
         return redirect('/dashboard/companies')->with('success', 'Company saved!');
     }
@@ -64,24 +49,38 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Company $company): \Illuminate\Contracts\View\View
     {
-        //
+        return view('company.edit', compact('company'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CompanyRequest $request, Company $company)
     {
-        //
+        $request = $request->validated();
+
+        if (isset($request['logo'])) {
+           // unlink(storage_path('app/public/logos/' . $company->logo));
+            $logoName = time() . '.' . $request['logo']->extension();
+            $request['logo']->move(storage_path('app/public/logos'), $logoName);
+            $company->update([...$request, 'logo' => $logoName]);
+        }
+
+        $company->update($request);
+
+     return redirect('/dashboard/companies')->with('success', 'Company updated!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Company $company)
     {
-        //
+        unlink(storage_path('app/public/logos/' . $company->logo));
+        $company->delete();
+        return redirect('/dashboard/companies')->with('success', 'Company deleted!');
     }
 }
