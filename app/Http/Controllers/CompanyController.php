@@ -20,7 +20,7 @@ class CompanyController extends Controller
     {
         $companies = Company::paginate(20);
 
-        return view('company.index', ['companies' => $companies]);
+        return view('companies.index', ['companies' => $companies]);
     }
 
     /**
@@ -28,7 +28,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('company.create');
+        return view('companies.create');
     }
 
     /**
@@ -48,7 +48,7 @@ class CompanyController extends Controller
      */
     public function edit(Company $company): \Illuminate\Contracts\View\View
     {
-        return view('company.edit', compact('company'));
+        return view('companies.edit', compact('company'));
     }
 
 

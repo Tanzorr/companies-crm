@@ -1,6 +1,7 @@
 @extends('dashboard')
 
 @section('content')
+    <x-breadcrumbs :links="['My Companies'=>route('companies.index'), 'Create'=>'#' ]" class="mb-4"/>
     <form method="POST" action="{{ route('company.store') }}" enctype="multipart/form-data">
         @csrf
 

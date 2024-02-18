@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h1 class="text-xl mb-4">Company List</h1>
-                <a href="{{ route('company.create') }}" class="btn btn-primary">Create Company</a>
+                <a href="{{ route('companies.create') }}" class="btn btn-primary">Create Company</a>
             </div>
             <table class="mt-5">
                 <thead>
@@ -27,8 +27,8 @@
                             <x-link-button href="{{ $company->website }}">Visit</x-link-button>
                         </td>
                         <td>
-                            <x-link-button href="{{route('company.edit', $company)}}">Edit</x-link-button>
-                            <form action="{{ route('company.destroy', $company) }}" method="POST">
+                            <x-link-button href="{{route('companies.edit', $company)}}">Edit</x-link-button>
+                            <form action="{{ route('companies.destroy', $company) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <x-button >Delete</x-button>

@@ -1,7 +1,8 @@
 @extends('dashboard')
 
 @section('content')
-    <form method="POST" action="{{ route('company.update', $company) }}" enctype="multipart/form-data">
+    <x-breadcrumbs :links="['My Companies'=>route('companies.index'), 'Edit'=>'#' ]" class="mb-4"/>
+    <form method="POST" action="{{ route('companies.update', $company) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
