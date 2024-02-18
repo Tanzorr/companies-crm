@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
+use App\Service\ImageService;
 
 class CompanyController extends Controller
 {
+
+    public function __construct(private ImageService $imageService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -31,19 +37,10 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
         $request = $request->validated();
-        $logoName = time() . '.' . $request['logo']->extension();
-        $request['logo']->move(storage_path('app/public/logos'), $logoName);
+        $logoName = $this->imageService->storageImage($request['logo']);
         Company::create([...$request, 'logo' => $logoName]);
 
         return redirect('/dashboard/companies')->with('success', 'Company saved!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
@@ -57,30 +54,33 @@ class CompanyController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @throws \Exception
      */
     public function update(CompanyRequest $request, Company $company)
     {
         $request = $request->validated();
+        $logoFile = $request['logo'] ?? null;
 
-        if (isset($request['logo'])) {
-           // unlink(storage_path('app/public/logos/' . $company->logo));
-            $logoName = time() . '.' . $request['logo']->extension();
-            $request['logo']->move(storage_path('app/public/logos'), $logoName);
+        if (isset($logoFile)) {
+            $this->imageService->deleteImage($company->logo);
+            $logoName = $this->imageService->storageImage($logoFile);
             $company->update([...$request, 'logo' => $logoName]);
+        } else {
+            $company->update($request);
         }
 
-        $company->update($request);
-
-     return redirect('/dashboard/companies')->with('success', 'Company updated!');
+        return redirect('/dashboard/companies')->with('success', 'Company updated!');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Company $company)
     {
-        unlink(storage_path('app/public/logos/' . $company->logo));
+        $this->imageService->deleteImage($company->logo);
         $company->delete();
+
         return redirect('/dashboard/companies')->with('success', 'Company deleted!');
     }
 }
