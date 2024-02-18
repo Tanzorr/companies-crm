@@ -16,6 +16,16 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('companies.index')" :active="request()->routeIs('dashboard')">
+                        {{ __('Companies') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('employees.index')" :active="request()->routeIs('dashboard')">
+                        {{ __('Employs') }}
+                    </x-nav-link>
+                </div>
             </div>
             <div class="flex align-baseline">
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">

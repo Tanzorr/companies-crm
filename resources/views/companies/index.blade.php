@@ -27,12 +27,14 @@
                             <x-link-button href="{{ $company->website }}">Visit</x-link-button>
                         </td>
                         <td>
-                            <x-link-button href="{{route('companies.edit', $company)}}">Edit</x-link-button>
-                            <form action="{{ route('companies.destroy', $company) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <x-button >Delete</x-button>
-                            </form>
+                            <div class="flex gap-2">
+                                <x-link-button href="{{route('companies.edit', $company)}}">Edit</x-link-button>
+                                <form action="{{ route('companies.destroy', $company) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-button >Delete</x-button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @empty
