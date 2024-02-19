@@ -3,21 +3,19 @@
 namespace App\Service;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ImageService
 {
-    private string $path = 'app/public/logos';
-    private string $name = 'logo';
 
     /**
      * @param UploadedFile $file
      * @return string
      */
-    public function storageImage(UploadedFile $file): string
+    public function storageImage(UploadedFile $file, string $storagePath): string
     {
         $imageName = time() . '.' . $file->extension();
-        $file->move(storage_path($this->path), $imageName);
+        $file->move(storage_path($storagePath), $imageName);
 
         return $imageName;
     }
@@ -26,12 +24,12 @@ class ImageService
      * @param string $name
      * @throws \Exception
      */
-    public function deleteImage(string $name): void
+    public function deleteImage(string $name, string $storagePath): void
     {
-        $filePath = $this->path . '/' . $name;
+        $filePath = storage_path("$storagePath/$name");
 
-        if (Storage::exists($filePath)) {
-            Storage::delete($filePath);
+        if (File::exists($filePath)) {
+            File::delete($filePath);
         }
     }
 }

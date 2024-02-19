@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+    private string $storagePath = 'app/public/logos';
 
     public function __construct(private ImageService $imageService)
     {
@@ -41,7 +42,7 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
         $request = $request->validated();
-        $logoName = $this->imageService->storageImage($request['logo']);
+        $logoName = $this->imageService->storageImage($request['logo'], $this->storagePath);
         Company::create([...$request, 'logo' => $logoName]);
 
         return redirect('/dashboard/companies')->with('success', 'Company saved!');
@@ -66,8 +67,8 @@ class CompanyController extends Controller
         $logoFile = $request['logo'] ?? null;
 
         if (isset($logoFile)) {
-            $this->imageService->deleteImage($company->logo);
-            $logoName = $this->imageService->storageImage($logoFile);
+            $this->imageService->deleteImage($company->logo, $this->storagePath);
+            $logoName = $this->imageService->storageImage($logoFile, $this->storagePath);
             $company->update([...$request, 'logo' => $logoName]);
         } else {
             $company->update($request);
@@ -82,7 +83,7 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        $this->imageService->deleteImage($company->logo);
+        $this->imageService->deleteImage($company->logo, $this->storagePath);
         $company->delete();
 
         return redirect('/dashboard/companies')->with('success', 'Company deleted!');
