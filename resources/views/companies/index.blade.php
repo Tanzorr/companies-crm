@@ -8,7 +8,7 @@
                 <div class="flex justify-between">
                     <a href="{{ route('companies.create') }}" class="btn btn-primary">Create Company</a>
                     <x-search-form
-                        :action="route('companies.search')"
+                        :action="route('companies.index')"
                         :seachValue="request()->input('search')"
                     ></x-search-form>
                 </div>

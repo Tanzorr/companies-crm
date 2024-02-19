@@ -12,25 +12,13 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
-    {
-        $employees = Employee::with('company')->paginate(5);
-
-        return view('employees.index', ['employees' => $employees]);
-    }
-
-    public function search(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $search = $request->get('search');
-        $employees = Employee::where('first_name', 'like', '%' . $search . '%')
-            ->orWhere('last_name', 'like', '%' . $search . '%')
-            ->orWhere('email', 'like', '%' . $search . '%')
-            ->orWhere('phone', 'like', '%'. $search. '%')
-            ->paginate(5);
+        $employees = Employee::search($search)->with('company')->paginate(5)->withQueryString();
 
         return view('employees.index', ['employees' => $employees]);
     }
-
 
 
     /**

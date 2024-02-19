@@ -17,19 +17,12 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $companies = Company::paginate(5);
-
-        return view('companies.index', ['companies' => $companies]);
-    }
-
-    public function search(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $search = $request->get('search');
-        $companies = Company::where('name', 'like', '%'.$search.'%')
-            ->orWhere('email', 'like', '%'.$search.'%')
-            ->paginate(5);
+        $companies = Company::search($search)
+            ->paginate(5)
+            ->withQueryString();
 
         return view('companies.index', ['companies' => $companies]);
     }

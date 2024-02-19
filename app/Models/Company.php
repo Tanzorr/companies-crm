@@ -21,4 +21,10 @@ class Company extends Model
     {
         return $this->hasMany(Employee::class);
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', '%'.$search.'%')
+            ->orWhere('email', 'like', '%'.$search.'%');
+    }
 }
