@@ -44,5 +44,8 @@
                 @endforelse
                 </tbody>
             </table>
+            <div class="mt-5">
+                {{ $companies->links() }}
+            </div>
         </div>
 @endsection
