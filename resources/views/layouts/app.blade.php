@@ -14,7 +14,14 @@
 
         <!-- Scripts -->
         <script src="https://cdn.tailwindcss.com"></script>
-{{--       // @vite(['resources/css/app.css', 'resources/js/app.js'])--}}
+        <style>
+            .overflow-ellipsis {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                max-width: 200px;
+            }
+        </style>
 
     </head>
     <body class="font-sans antialiased">

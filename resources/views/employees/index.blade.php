@@ -28,11 +28,11 @@
             <tbody>
             @forelse($employees as $employee)
                 <tr>
-                    <td class="py-2 px-4 border-b">{{ $employee->first_name }}</td>
-                    <td class="py-2 px-4 border-b">{{ $employee->last_name }}</td>
-                    <td class="py-2 px-4 border-b">{{ $employee->company->name }}</td>
-                    <td class="py-2 px-4 border-b">{{ $employee->email }}</td>
-                    <td class="py-2 px-4 border-b">{{ $employee->phone }}</td>
+                    <td class="py-2 px-4 border-b overflow-ellipsis">{{ $employee->first_name }}</td>
+                    <td class="py-2 px-4 border-b overflow-ellipsis">{{ $employee->last_name }}</td>
+                    <td class="py-2 px-4 border-b overflow-ellipsis">{{ $employee->company->name }}</td>
+                    <td class="py-2 px-4 border-b overflow-ellipsis">{{ $employee->email }}</td>
+                    <td class="py-2 px-4 border-b overflow-ellipsis">{{ $employee->phone }}</td>
                     <td class="py-2 px-4 border-b">
                         <div class="flex gap-2">
                             <x-link-button href="{{ route('employees.edit', $employee) }}" class="text-blue-500">Edit</x-link-button>

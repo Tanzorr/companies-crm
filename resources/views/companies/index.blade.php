@@ -26,9 +26,9 @@
                 <tbody>
                 @forelse($companies as $company)
                     <tr>
-                        <td class="py-2 px-4 border-b"><img src="{{ asset('/storage/logos/'.$company->logo) }}" alt="" width="100" height="100"></td>
-                        <td class="py-2 px-4 border-b">{{ $company->name }}</td>
-                        <td class="py-2 px-4 border-b">{{ $company->email }}</td>
+                        <td class="py-2 px-4 border-b "><img src="{{ asset('/storage/logos/'.$company->logo) }}" alt="" width="100" height="100"></td>
+                        <td class="py-2 px-4 border-b overflow-ellipsis">{{ $company->name }}</td>
+                        <td class="py-2 px-4 border-b overflow-ellipsis">{{ $company->email }}</td>
                         <td class="py-2 px-4 border-b">
                             <x-link-button href="{{ $company->website }}" class="text-blue-500">Visit</x-link-button>
                         </td>
