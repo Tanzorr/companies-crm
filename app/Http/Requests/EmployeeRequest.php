@@ -21,11 +21,13 @@ class EmployeeRequest extends FormRequest
      */
     public function rules(): array
     {
+        $pattern = '/^\+\d{1,4}(\d{1,15})?$/';
+
         return [
             'first_name' => 'required | string | max:255',
             'last_name' => 'required | string | max:255',
             'email' => 'required | email | unique:users,email',
-            'phone' => 'phone_regex'
+            'phone' => 'regex:'.$pattern.'|nullable',
         ];
     }
 }

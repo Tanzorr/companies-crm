@@ -52,7 +52,7 @@
         <div class="mt-4">
             <x-input-label for="phone" :value="__('phone')"/>
             <x-text-input id="phone" class="block mt-1 w-full"
-                          type="number"
+                          type="text"
                           :value="$employee->phone"
                           name="phone" required/>
 
