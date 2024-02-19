@@ -56,24 +56,39 @@ class EmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Employee $employee)
     {
-        //
+        $companies = Company::all();
+        return view('employees.edit',[
+            'employee' => $employee,
+            'companies' => $companies
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Employee $employee)
     {
-        //
+        $request->validate([
+            'first_name' => 'required | string | max:255',
+            'last_name'=>'required | string | max:255',
+            'email' => 'required | email | unique:users,email',
+            'phone' => 'required | phone_regex'
+        ]);
+
+        $employee->update($request->all());
+
+        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
+
+        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
     }
 }

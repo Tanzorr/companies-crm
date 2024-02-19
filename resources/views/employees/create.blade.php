@@ -46,7 +46,9 @@
 
         <x-text-input id="phone" class="block mt-1 w-full"
                       type="number"
-                      name="phone" required/>
+                      name="phone"
+                      :value="old('phone')"
+                      required/>
 
         <x-input-error :messages="$errors->get('phone')" class="mt-2"/>
     </div>

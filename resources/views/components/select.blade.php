@@ -5,6 +5,9 @@
             class="form-select block w-full leading-5 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
         >
             @foreach($options as $option)
+                @if(isset($selected) && $selected == $option->id)
+                    <option value="{{ $option->id }}" selected>{{ $option->name }}</option>
+                @endif
                 <option value="{{ $option->id }}">{{ $option->name }}</option>
             @endforeach
         </select>
