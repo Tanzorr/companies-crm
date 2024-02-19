@@ -5,7 +5,13 @@
         <div class="row">
             <div class="col-md-12">
                 <h1 class="text-xl mb-4">Employee List</h1>
-                <a href="{{ route('employees.create') }}" class="btn btn-primary">Add Employee</a>
+                <div class="flex justify-between">
+                    <a href="{{ route('employees.create') }}" class="btn btn-primary">Add Employee</a>
+                    <x-search-form
+                        :action="route('employees.search')"
+                        :seachValue="request()->input('search')"
+                    ></x-search-form>
+                </div>
             </div>
         </div>
         <table class="min-w-full mt-5 bg-white border border-gray-300">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use App\Service\ImageService;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
@@ -19,6 +20,16 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Company::paginate(5);
+
+        return view('companies.index', ['companies' => $companies]);
+    }
+
+    public function search(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $search = $request->get('search');
+        $companies = Company::where('name', 'like', '%'.$search.'%')
+            ->orWhere('email', 'like', '%'.$search.'%')
+            ->paginate(5);
 
         return view('companies.index', ['companies' => $companies]);
     }

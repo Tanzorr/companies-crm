@@ -21,15 +21,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::get('/dashboard', function () {
-//    return view('dashboard');
-//})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/dashboard/companies/search', [\App\Http\Controllers\CompanyController::class, 'search'])->name('companies.search');
     Route::resource('/dashboard/companies', \App\Http\Controllers\CompanyController::class)->names('companies');
+    Route::get('/dashboard/search', [\App\Http\Controllers\EmployeeController::class, 'search'])->name('employees.search');
     Route::resource('/dashboard/employees', \App\Http\Controllers\EmployeeController::class)->names('employees');
 });
 

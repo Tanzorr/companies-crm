@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Company;
 use App\Models\Employee;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
@@ -17,6 +18,20 @@ class EmployeeController extends Controller
 
         return view('employees.index', ['employees' => $employees]);
     }
+
+    public function search(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $search = $request->get('search');
+        $employees = Employee::where('first_name', 'like', '%' . $search . '%')
+            ->orWhere('last_name', 'like', '%' . $search . '%')
+            ->orWhere('email', 'like', '%' . $search . '%')
+            ->orWhere('phone', 'like', '%'. $search. '%')
+            ->paginate(5);
+
+        return view('employees.index', ['employees' => $employees]);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
