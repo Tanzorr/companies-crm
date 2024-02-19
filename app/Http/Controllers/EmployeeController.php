@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeRequest;
 use App\Models\Company;
 use App\Models\Employee;
-use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $employees = Employee::with('company')->paginate(5);
 
@@ -21,7 +21,7 @@ class EmployeeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $companies = Company::all();
 
@@ -31,35 +31,22 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EmployeeRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $request->validate([
-            'first_name' => 'required | string | max:255',
-            'last_name'=>'required | string | max:255',
-            'email' => 'required | email | unique:users,email',
-            'phone' => 'required | phone_regex'
-        ]);
-
+        $request->validated();
         Employee::create($request->all());
 
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Employee $employee)
+    public function edit(Employee $employee): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $companies = Company::all();
-        return view('employees.edit',[
+        return view('employees.edit', [
             'employee' => $employee,
             'companies' => $companies
         ]);
@@ -68,15 +55,9 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Employee $employee)
+    public function update(EmployeeRequest $request, Employee $employee): \Illuminate\Http\RedirectResponse
     {
-        $request->validate([
-            'first_name' => 'required | string | max:255',
-            'last_name'=>'required | string | max:255',
-            'email' => 'required | email | unique:users,email',
-            'phone' => 'required | phone_regex'
-        ]);
-
+        $request->validated();
         $employee->update($request->all());
 
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
@@ -85,7 +66,7 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employee $employee)
+    public function destroy(Employee $employee): \Illuminate\Http\RedirectResponse
     {
         $employee->delete();
 
