@@ -15,7 +15,8 @@ class EmployeeController extends Controller
     public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $search = $request->get('search');
-        $employees = Employee::search($search)->with('company')->paginate(5)->withQueryString();
+        $employees = Employee::search($search, ['first_name', 'last_name', 'email', 'phone'])
+            ->with('company')->paginate(5)->withQueryString();
 
         return view('employees.index', ['employees' => $employees]);
     }
@@ -36,8 +37,9 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $request->validated();
-        Employee::create($request->all());
+        $validateRequest = $request->validated();
+
+        Employee::query()->create($validateRequest);
 
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
@@ -60,8 +62,8 @@ class EmployeeController extends Controller
      */
     public function update(EmployeeRequest $request, Employee $employee): \Illuminate\Http\RedirectResponse
     {
-        $request->validated();
-        $employee->update($request->all());
+        $validateRequest = $request->validated();
+        $employee->update($validateRequest);
 
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }

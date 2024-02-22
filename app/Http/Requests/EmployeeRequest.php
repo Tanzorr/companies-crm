@@ -26,8 +26,9 @@ class EmployeeRequest extends FormRequest
         return [
             'first_name' => 'required | string | max:255',
             'last_name' => 'required | string | max:255',
+            'company_id' => 'required | exists:companies,id',
             'email' => 'required | email | unique:users,email',
-            'phone' => 'regex:'.$pattern.'|nullable',
+            'phone' => 'regex:' . $pattern . '|nullable',
         ];
     }
 }

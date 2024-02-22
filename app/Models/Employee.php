@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Http\Traits\QueryTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
-    use HasFactory;
+    use HasFactory, QueryTrait;
 
     protected $fillable = [
         'first_name',
@@ -20,13 +21,5 @@ class Employee extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
-    }
-
-    public function scopeSearch($query, $search)
-    {
-        return $query->where('first_name', 'like', '%' . $search . '%')
-            ->orWhere('last_name', 'like', '%' . $search . '%')
-            ->orWhere('email', 'like', '%' . $search . '%')
-            ->orWhere('phone', 'like', '%' . $search . '%');
     }
 }

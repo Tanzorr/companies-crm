@@ -21,7 +21,7 @@ class CompanyController extends Controller
     public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $search = $request->get('search');
-        $companies = Company::search($search)
+        $companies = Company::search($search, ['name', 'email'])
             ->paginate(5)
             ->withQueryString();
 
@@ -45,7 +45,7 @@ class CompanyController extends Controller
         $logoName = $this->imageService->storageImage($request['logo'], $this->storagePath);
         Company::create([...$request, 'logo' => $logoName]);
 
-        return redirect('/dashboard/companies')->with('success', 'Company saved!');
+        return redirect()->route('companies.index')->with('success', 'Company saved!');
     }
 
     /**
@@ -74,7 +74,7 @@ class CompanyController extends Controller
             $company->update($request);
         }
 
-        return redirect('/dashboard/companies')->with('success', 'Company updated!');
+        return redirect()->route('companies.index')->with('success', 'Company updated!');
     }
 
 
@@ -86,6 +86,6 @@ class CompanyController extends Controller
         $this->imageService->deleteImage($company->logo, $this->storagePath);
         $company->delete();
 
-        return redirect('/dashboard/companies')->with('success', 'Company deleted!');
+        return redirect()->route('companies.index')->with('success', 'Company deleted!');
     }
 }
